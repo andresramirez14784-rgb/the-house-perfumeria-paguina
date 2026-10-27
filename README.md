@@ -34,6 +34,7 @@ de VS Code, etc.
 index.html          Marcado y contenido (textos, precios, enlaces)
 assets/styles.css   Paleta, tipografía, tarjetas, animaciones de scroll
 assets/app.js       Escena three.js + interacciones
+assets/logo-the-house.png   Logotipo de la marca (fondo transparente)
 serve.py            Servidor local con apertura automática del navegador
 start.cmd           Lanzador para Windows
 ```

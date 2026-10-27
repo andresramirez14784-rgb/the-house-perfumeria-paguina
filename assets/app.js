@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    THE HOUSE PERFUMERÍA — escena 3D
    three.js r169 · módulo ES
    Botella de cristal procedural, suelo reflectante, anillos
@@ -212,7 +212,7 @@ function buildFloor() {
   const pool = new THREE.Mesh(
     new THREE.PlaneGeometry(7, 7),
     new THREE.MeshBasicMaterial({
-      map: radialTexture("rgba(216, 180, 106, 0.16)", "rgba(216, 180, 106, 0)"),
+      map: radialTexture("rgba(230, 194, 112, 0.16)", "rgba(230, 194, 112, 0)"),
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
@@ -240,7 +240,7 @@ function buildFloor() {
 function buildGlow() {
   glow = new THREE.Sprite(
     new THREE.SpriteMaterial({
-      map: radialTexture("rgba(216, 180, 106, 0.5)", "rgba(216, 180, 106, 0)"),
+      map: radialTexture("rgba(230, 194, 112, 0.5)", "rgba(230, 194, 112, 0)"),
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
@@ -293,7 +293,7 @@ function buildBottle() {
   group.add(liquid);
 
   const gold = new THREE.MeshStandardMaterial({
-    color: 0xd7b673,
+    color: 0xe0bb6b,
     metalness: 1,
     roughness: 0.18,
     envMapIntensity: 1.6,
@@ -339,9 +339,9 @@ function buildBottle() {
 /* Anillos holográficos parciales alrededor de la base */
 function buildRings() {
   const defs = [
-    { r: 1.35, arc: Math.PI * 1.55, tube: 0.005, color: 0xd8b46a, opacity: 0.5, speed: 0.22 },
+    { r: 1.35, arc: Math.PI * 1.55, tube: 0.005, color: 0xe6c270, opacity: 0.5, speed: 0.22 },
     { r: 1.8, arc: Math.PI * 1.2, tube: 0.0035, color: 0x76d7ff, opacity: 0.3, speed: -0.16 },
-    { r: 2.25, arc: Math.PI * 1.72, tube: 0.003, color: 0xd8b46a, opacity: 0.22, speed: 0.11 },
+    { r: 2.25, arc: Math.PI * 1.72, tube: 0.003, color: 0xe6c270, opacity: 0.22, speed: 0.11 },
   ];
 
   defs.forEach((d, i) => {
