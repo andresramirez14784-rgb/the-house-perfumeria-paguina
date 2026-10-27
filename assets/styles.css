@@ -774,6 +774,143 @@ h2 em { font-style: italic; color: var(--gold-2); }
 
 .reveal.is-in .note__meter i { transform: scaleX(1); }
 
+/* ---------- Cómo funciona ---------- */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.step {
+  padding: 28px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.step__num {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(230, 194, 112, 0.4);
+  border-radius: 50%;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--gold-2);
+}
+
+.step h3 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.3rem;
+}
+
+.step p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* ---------- Garantía ---------- */
+
+.trust {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.trust__item {
+  padding: 26px 22px;
+  border: 1px solid rgba(230, 194, 112, 0.14);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  text-align: center;
+}
+
+.trust__ico {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: rgba(230, 194, 112, 0.12);
+  color: var(--gold-2);
+  font-size: 1.1rem;
+}
+
+.trust__item h3 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.trust__item p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* ---------- Preguntas frecuentes ---------- */
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq details {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  color: var(--ink);
+}
+
+.faq summary::-webkit-details-marker { display: none; }
+
+.faq summary::after {
+  content: "+";
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--gold);
+  transition: transform 0.3s ease;
+}
+
+.faq details[open] summary::after { transform: rotate(45deg); }
+
+.faq details p {
+  margin: 0;
+  padding: 0 22px 20px;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
 /* ---------- Contacto ---------- */
 
 .contact { text-align: center; }
@@ -877,6 +1014,13 @@ h2 em { font-style: italic; color: var(--gold-2); }
 
 @media (max-width: 980px) {
   .grid--3 { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .steps { grid-template-columns: 1fr; }
+  .trust { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 860px) {

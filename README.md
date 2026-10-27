@@ -46,16 +46,17 @@ start.cmd           Lanzador para Windows
 2. Conviértela a WebP para que pese poco (por ejemplo con Squoosh o `cwebp`).
 3. En `index.html`, dentro de `<div class="grid grid--catalog">`, duplica el
    bloque `<article class="product" data-unit="…" data-name="…">…</article>`.
-   Cambia: imagen, marca, nombre, descripción, el **precio por gramo** (en
+   Cambia: imagen, marca, nombre, descripción, el **precio por mililitro** (en
    `data-unit`), y el texto del enlace de WhatsApp.
-4. Los botones de gramos (`5 g / 10 g / 15 g / 30 g`) se pueden ampliar o
-   cambiar dentro del bloque; `assets/catalog.js` calcula el total y arma el
+4. Los botones de mililitros (`5 ml / 10 ml / 15 ml / 30 ml`) se pueden ampliar
+   o cambiar dentro del bloque; `assets/catalog.js` calcula el total y arma el
    mensaje de WhatsApp automáticamente al hacer clic.
 5. La rejilla se acomoda sola: 2 columnas cuando hay pocos productos y más
    cuando el catálogo crece.
 
-El modelo del sitio es **venta por gramos**: cada tarjeta muestra el precio por
-gramo y el total según la cantidad elegida.
+El modelo del sitio es **venta por mililitros (decants)**: cada tarjeta muestra
+el precio por ml y el total según la cantidad elegida (1 ml ≈ 1 gramo de
+perfume).
 
 ## Personalizar
 

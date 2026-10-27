@@ -16,7 +16,7 @@
 
     function update(grams) {
       totalEl.textContent = fmt(unit * grams);
-      var msg = encodeURIComponent("Hola, quiero " + grams + " gramos de " + name + ".");
+      var msg = encodeURIComponent("Hola, quiero " + grams + " ml de " + name + ".");
       waLink.setAttribute("href", "https://wa.me/" + PHONE + "?text=" + msg);
     }
 
