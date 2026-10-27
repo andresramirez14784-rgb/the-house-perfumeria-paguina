@@ -35,9 +35,24 @@ index.html          Marcado y contenido (textos, precios, enlaces)
 assets/styles.css   Paleta, tipografía, tarjetas, animaciones de scroll
 assets/app.js       Escena three.js + interacciones
 assets/logo-the-house.png   Logotipo de la marca (fondo transparente)
+assets/productos/   Fotos del catálogo (WebP optimizado)
 serve.py            Servidor local con apertura automática del navegador
 start.cmd           Lanzador para Windows
 ```
+
+## Agregar un producto al catálogo
+
+1. Guarda la foto en `assets/productos/` (cuadrada, mínimo 800×800 px).
+2. Conviértela a WebP para que pese poco (por ejemplo con Squoosh o `cwebp`).
+3. En `index.html`, dentro de `<div class="grid grid--catalog">`, duplica el
+   bloque `<article class="product">…</article>` y cambia: imagen, marca,
+   nombre, descripción, precio y los enlaces de WhatsApp (el texto del enlace
+   va codificado: `?text=Hola%2C%20quiero%20…`).
+4. La rejilla se acomoda sola: 2 columnas cuando hay pocos productos y más
+   cuando el catálogo crece.
+
+La tarjeta punteada «Te conseguimos tu fragancia» puede quedarse al final como
+cierre del catálogo, o moverse a otra sección si el catálogo ya es largo.
 
 ## Personalizar
 
