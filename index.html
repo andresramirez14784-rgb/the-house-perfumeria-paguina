@@ -49,9 +49,9 @@
         <p class="eyebrow">Casa de perfumería · Bogotá</p>
         <h1><span>THE HOUSE</span><em>PERFUMERÍA</em></h1>
         <p class="lede">
-          Fragancias de autor creadas en pequeños lotes. Materias primas nobles,
-          alcohol de trigo y una obsesión: que el aroma permanezca en la piel
-          mucho después de que te hayas ido.
+          Perfumes originales servidos por gramos. Elige la cantidad exacta,
+          te lo decantamos en frasco de viaje y lo recibes sellado y verificado.
+          Tu firma favorita, sin comprar el frasco completo.
         </p>
         <div class="actions">
           <a class="btn btn--solid" href="#coleccion">Explorar la colección</a>
@@ -69,17 +69,25 @@
           <p class="eyebrow">01 — Catálogo</p>
           <h2>Fragancias <em>originales</em></h2>
           <p class="section__lede">
-            Trabajamos con casas de perfumería reconocidas. Cada frasco llega
-            sellado, con lote verificable y garantía de autenticidad.
+            Perfumes 100% originales servidos por gramos. Elige la cantidad,
+            confirma por WhatsApp y recíbelo donde estés.
           </p>
         </header>
 
+        <figure class="banner reveal">
+          <img src="assets/productos/banner-por-gramos.webp" alt="" loading="lazy" />
+          <figcaption>
+            <p class="eyebrow">Venta a granel</p>
+            <p class="banner__title">Tu perfume favorito, <em>por gramos</em></p>
+          </figcaption>
+        </figure>
+
         <div class="grid grid--catalog">
-          <article class="product reveal">
+          <article class="product reveal" data-unit="4500" data-name="212 VIP Men de Carolina Herrera">
             <a class="product__media"
-               href="https://wa.me/573001234567?text=Hola%2C%20quiero%20el%20212%20VIP%20Men"
+               href="https://wa.me/573001234567?text=Hola%2C%20quiero%2010%20gramos%20de%20212%20VIP%20Men"
                target="_blank" rel="noopener"
-               aria-label="Consultar 212 VIP Men por WhatsApp">
+               aria-label="Pedir 212 VIP Men por WhatsApp">
               <img src="assets/productos/212-vip-men.webp"
                    alt="212 VIP Men de Carolina Herrera: frasco plateado y caja blanca sobre una mesa"
                    width="500" height="500" loading="lazy" />
@@ -92,11 +100,18 @@
                 Vodka, lima y cuero sobre ámbar. Amaderado aromático para la
                 noche urbana.
               </p>
+              <p class="product__unit">$ 4.500 <small>/ gramo</small></p>
+              <div class="product__grams" role="group" aria-label="Cantidad en gramos">
+                <button type="button" data-g="5">5 g</button>
+                <button type="button" data-g="10" class="is-active">10 g</button>
+                <button type="button" data-g="15">15 g</button>
+                <button type="button" data-g="30">30 g</button>
+              </div>
               <div class="product__foot">
-                <span class="product__price">$ 419.000 <small>/ 100 ml</small></span>
-                <a class="product__cta"
-                   href="https://wa.me/573001234567?text=Hola%2C%20quiero%20el%20212%20VIP%20Men"
-                   target="_blank" rel="noopener">Consultar <span aria-hidden="true">→</span></a>
+                <span class="product__price" data-total>$ 45.000</span>
+                <a class="product__cta" data-wa
+                   href="https://wa.me/573001234567?text=Hola%2C%20quiero%2010%20gramos%20de%20212%20VIP%20Men"
+                   target="_blank" rel="noopener">Pedir <span aria-hidden="true">→</span></a>
               </div>
             </div>
           </article>
@@ -106,11 +121,11 @@
               <p class="product__brand">¿No la encuentras?</p>
               <h3 class="product__name">Te conseguimos<br />tu fragancia</h3>
               <p class="product__desc">
-                Dinos qué perfume buscas y te confirmamos disponibilidad,
-                tamaño y precio el mismo día.
+                Dinos qué perfume quieres y cuántos gramos necesitas; te
+                confirmamos precio y disponibilidad el mismo día.
               </p>
               <a class="btn btn--solid"
-                 href="https://wa.me/573001234567?text=Hola%2C%20busco%20una%20fragancia"
+                 href="https://wa.me/573001234567?text=Hola%2C%20busco%20una%20fragancia%20por%20gramos"
                  target="_blank" rel="noopener">Escribir por WhatsApp</a>
             </div>
           </article>
@@ -274,5 +289,6 @@
     }
   </script>
   <script type="module" src="assets/app.js"></script>
+  <script src="assets/catalog.js" defer></script>
 </body>
 </html>

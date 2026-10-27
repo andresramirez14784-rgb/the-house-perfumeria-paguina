@@ -45,20 +45,24 @@ start.cmd           Lanzador para Windows
 1. Guarda la foto en `assets/productos/` (cuadrada, mínimo 800×800 px).
 2. Conviértela a WebP para que pese poco (por ejemplo con Squoosh o `cwebp`).
 3. En `index.html`, dentro de `<div class="grid grid--catalog">`, duplica el
-   bloque `<article class="product">…</article>` y cambia: imagen, marca,
-   nombre, descripción, precio y los enlaces de WhatsApp (el texto del enlace
-   va codificado: `?text=Hola%2C%20quiero%20…`).
-4. La rejilla se acomoda sola: 2 columnas cuando hay pocos productos y más
+   bloque `<article class="product" data-unit="…" data-name="…">…</article>`.
+   Cambia: imagen, marca, nombre, descripción, el **precio por gramo** (en
+   `data-unit`), y el texto del enlace de WhatsApp.
+4. Los botones de gramos (`5 g / 10 g / 15 g / 30 g`) se pueden ampliar o
+   cambiar dentro del bloque; `assets/catalog.js` calcula el total y arma el
+   mensaje de WhatsApp automáticamente al hacer clic.
+5. La rejilla se acomoda sola: 2 columnas cuando hay pocos productos y más
    cuando el catálogo crece.
 
-La tarjeta punteada «Te conseguimos tu fragancia» puede quedarse al final como
-cierre del catálogo, o moverse a otra sección si el catálogo ya es largo.
+El modelo del sitio es **venta por gramos**: cada tarjeta muestra el precio por
+gramo y el total según la cantidad elegida.
 
 ## Personalizar
 
 | Qué | Dónde |
 | --- | --- |
 | Nombre de la marca, textos, precios, enlaces de contacto | `index.html` |
+| WhatsApp de la tienda (usado por el selector de gramos) | `assets/catalog.js` → `PHONE` |
 | Colores (dorado, fondo, tipografía) | `assets/styles.css` → `:root` |
 | Color del perfume y del tapón | `assets/app.js` → `liquidMat` / `gold` |
 | Velocidad de giro, anillos, polvo | `assets/app.js` → `animate()` y `buildRings()` |

@@ -487,6 +487,51 @@ h2 em { font-style: italic; color: var(--gold-2); }
 .card__price { font-family: var(--serif); font-size: 1.12rem; color: var(--gold-2); }
 .card__ml { font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(169, 161, 150, 0.7); }
 
+/* ---------- Banner ---------- */
+
+.banner {
+  position: relative;
+  height: clamp(230px, 34vh, 360px);
+  margin: 0 0 38px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+}
+
+.banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 4, 10, 0.08) 18%, rgba(6, 4, 10, 0.8) 100%);
+}
+
+.banner figcaption {
+  position: absolute;
+  left: clamp(20px, 4vw, 44px);
+  right: clamp(20px, 4vw, 44px);
+  bottom: clamp(18px, 3vw, 34px);
+  z-index: 1;
+}
+
+.banner .banner__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 3.4vw, 2.7rem);
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.banner .banner__title em { font-style: italic; color: var(--gold-2); }
+
 /* ---------- Catálogo ---------- */
 
 .grid--catalog {
@@ -572,6 +617,50 @@ h2 em { font-style: italic; color: var(--gold-2); }
   font-size: 0.85rem;
   line-height: 1.7;
   color: var(--muted);
+}
+
+.product__unit {
+  margin: 0 0 14px;
+  font-family: var(--serif);
+  font-size: 1.06rem;
+  color: var(--gold-2);
+}
+
+.product__unit small {
+  font-family: var(--sans);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(171, 159, 140, 0.8);
+}
+
+.product__grams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.product__grams button {
+  padding: 8px 15px;
+  border: 1px solid rgba(230, 194, 112, 0.25);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.product__grams button:hover { border-color: rgba(230, 194, 112, 0.6); }
+
+.product__grams button.is-active {
+  background: linear-gradient(100deg, #f2dcae, #e6c270 55%, #b8862e);
+  color: #14100a;
+  border-color: transparent;
+  font-weight: 500;
 }
 
 .product__foot {
