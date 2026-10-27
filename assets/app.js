@@ -551,6 +551,8 @@ function bindEvents() {
   initReveals();
   initTilt();
   initTopbar();
+  initNavSpy();
+  initProductSpotlight();
 }
 
 let resizePending = false;
@@ -624,6 +626,42 @@ function initReveals() {
   );
 
   items.forEach((el) => io.observe(el));
+}
+
+/* Resalta en el menú la sección que estás viendo */
+function initNavSpy() {
+  const links = Array.from(document.querySelectorAll(".nav a"));
+  const pairs = links
+    .map((link) => ({ link, sec: document.querySelector(link.getAttribute("href")) }))
+    .filter((x) => x.sec);
+
+  if (!pairs.length || !("IntersectionObserver" in window)) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = "#" + entry.target.id;
+        links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === id));
+      });
+    },
+    { threshold: 0, rootMargin: "-45% 0px -45% 0px" }
+  );
+
+  pairs.forEach((p) => io.observe(p.sec));
+}
+
+/* Foco de luz que sigue el cursor sobre las tarjetas de producto */
+function initProductSpotlight() {
+  if (reduceMotion) return;
+
+  document.querySelectorAll(".product").forEach((card) => {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
+      card.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+    });
+  });
 }
 
 function initTilt() {
