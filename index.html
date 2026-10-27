@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>THE HOUSE PERFUMERÍA — Fragancias de autor</title>
+  <meta name="description" content="Casa de perfumería de autor. Fragancias nicho creadas en pequeños lotes: Noir Absolu, Ámbar Real y Seda Blanca. Bogotá, Colombia." />
+  <meta name="theme-color" content="#08080a" />
+  <meta property="og:title" content="THE HOUSE PERFUMERÍA" />
+  <meta property="og:description" content="Fragancias de autor creadas en pequeños lotes. Una experiencia 3D." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2308080a'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='26' fill='%23d8b46a' text-anchor='middle'%3ETH%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <!-- Pantalla de carga -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__word">THE HOUSE</div>
+    <div class="loader__bar"><i></i></div>
+  </div>
+
+  <!-- Escena 3D de fondo -->
+  <div class="stage" aria-hidden="true">
+    <canvas id="scene"></canvas>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#top" aria-label="THE HOUSE PERFUMERÍA — inicio">
+      <span class="brand__mark">TH</span>
+      <span class="brand__text">THE HOUSE<em>PERFUMERÍA</em></span>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#coleccion">Colección</a>
+      <a href="#notas">Notas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Portada -->
+    <section class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">Casa de perfumería · Bogotá</p>
+        <h1><span>THE HOUSE</span><em>PERFUMERÍA</em></h1>
+        <p class="lede">
+          Fragancias de autor creadas en pequeños lotes. Materias primas nobles,
+          alcohol de trigo y una obsesión: que el aroma permanezca en la piel
+          mucho después de que te hayas ido.
+        </p>
+        <div class="actions">
+          <a class="btn btn--solid" href="#coleccion">Explorar la colección</a>
+          <a class="btn btn--ghost" href="#contacto">Hablar con un asesor</a>
+        </div>
+        <p class="hint"><span class="hint__dot"></span>Arrastra para girar la botella · toca para rociar</p>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span>Desliza</div>
+    </section>
+
+    <!-- Colección -->
+    <section class="section" id="coleccion">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow">01 — Colección</p>
+          <h2>Tres firmas,<br /><em>una obsesión</em></h2>
+          <p class="section__lede">
+            Cada fórmula se compone a mano y madura seis semanas antes de embotellarse.
+            Producción limitada a 300 unidades por lote.
+          </p>
+        </header>
+
+        <div class="grid grid--3">
+          <article class="card reveal" data-tilt>
+            <span class="card__num">01</span>
+            <h3 class="card__name">Noir Absolu</h3>
+            <p class="card__family">Amaderado especiado</p>
+            <p class="card__desc">
+              Cuero curtido, azafrán y vetiver de Haití sobre un fondo de musgo
+              de roble y ámbar gris. Para la noche que no se olvida.
+            </p>
+            <div class="card__foot">
+              <span class="card__price">$ 289.000</span>
+              <span class="card__ml">100 ml</span>
+            </div>
+          </article>
+
+          <article class="card reveal" data-tilt>
+            <span class="card__num">02</span>
+            <h3 class="card__name">Ámbar Real</h3>
+            <p class="card__family">Oriental cálido</p>
+            <p class="card__desc">
+              Ámbar gris, vainilla de Madagascar y benjuí. Un abrazo lento
+              que se abre con el calor del cuerpo.
+            </p>
+            <div class="card__foot">
+              <span class="card__price">$ 312.000</span>
+              <span class="card__ml">100 ml</span>
+            </div>
+          </article>
+
+          <article class="card reveal" data-tilt>
+            <span class="card__num">03</span>
+            <h3 class="card__name">Seda Blanca</h3>
+            <p class="card__family">Floral limpio</p>
+            <p class="card__desc">
+              Jazmín sambac, pera verde y almizcle blanco. Luz de mediodía
+              sobre sábanas recién tendidas.
+            </p>
+            <div class="card__foot">
+              <span class="card__price">$ 265.000</span>
+              <span class="card__ml">100 ml</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pirámide olfativa -->
+    <section class="section section--solid" id="notas">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow">02 — La pirámide</p>
+          <h2>Cómo se <em>desarrolla</em></h2>
+          <p class="section__lede">
+            Una fragancia no huele igual a los cinco minutos que a las ocho horas.
+            Así se comporta <strong>Noir Absolu</strong> en la piel.
+          </p>
+        </header>
+
+        <div class="grid grid--3">
+          <article class="note reveal">
+            <span class="note__step">Salida · 0–20 min</span>
+            <h3>Bergamota de Calabria<br />Pimienta rosa</h3>
+            <div class="note__meter"><i style="--v: 92%"></i></div>
+            <p>El primer gesto: cítrico, brillante, con un filo picante que despierta la atención.</p>
+          </article>
+
+          <article class="note reveal">
+            <span class="note__step">Corazón · 20 min–3 h</span>
+            <h3>Azafrán<br />Iris · Cuero</h3>
+            <div class="note__meter"><i style="--v: 74%"></i></div>
+            <p>El carácter: seco, elegante, ligeramente amargo. Aquí la fragancia se vuelve tuya.</p>
+          </article>
+
+          <article class="note reveal">
+            <span class="note__step">Fondo · 3–8 h</span>
+            <h3>Vetiver de Haití<br />Ámbar gris · Musgo de roble</h3>
+            <div class="note__meter"><i style="--v: 88%"></i></div>
+            <p>La memoria: terroso, cálido, envolvente. Lo que queda en la bufanda al día siguiente.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="section section--solid" id="contacto">
+      <div class="wrap wrap--narrow contact">
+        <p class="eyebrow reveal">03 — Contacto</p>
+        <h2 class="reveal">Encuentra tu <em>firma</em></h2>
+        <p class="lede reveal">
+          Atendemos con cita previa en nuestro showroom de Bogotá y enviamos
+          a todo el país. Cuéntanos qué aromas te gustan y te enviamos
+          tres muestras para probar en casa.
+        </p>
+        <!-- Reemplaza estos enlaces y datos por los reales de la marca -->
+        <div class="contact__links reveal">
+          <a class="pill" href="https://wa.me/573001234567" target="_blank" rel="noopener">
+            <span>WhatsApp</span> +57 300 123 4567
+          </a>
+          <a class="pill" href="https://instagram.com/thehouseperfumeria" target="_blank" rel="noopener">
+            <span>Instagram</span> @thehouseperfumeria
+          </a>
+          <a class="pill" href="mailto:hola@thehouseperfumeria.co">
+            <span>Correo</span> hola@thehouseperfumeria.co
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span>© <span id="year">2026</span> THE HOUSE PERFUMERÍA</span>
+      <span>Bogotá · Colombia</span>
+      <span>Escena 3D con three.js</span>
+    </div>
+  </footer>
+
+  <!-- Aviso si el navegador no puede cargar los módulos (p. ej. abierto como file://) -->
+  <script>
+    (function () {
+      document.getElementById('year').textContent = new Date().getFullYear();
+      window.setTimeout(function () {
+        var loader = document.getElementById('loader');
+        if (!loader || loader.classList.contains('is-done')) return;
+        document.body.classList.add('no-webgl', 'is-ready');
+        loader.classList.add('is-done');
+        var note = document.createElement('div');
+        note.className = 'offline-note';
+        note.innerHTML = 'La escena 3D necesita un servidor local. Abre <strong>start.cmd</strong> o ejecuta <code>python -m http.server 8080</code> en esta carpeta y visita <code>http://localhost:8080</code>.';
+        document.body.appendChild(note);
+        window.setTimeout(function () { loader.remove(); }, 900);
+      }, 9000);
+    })();
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

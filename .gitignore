@@ -1,0 +1,12 @@
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Dependencias y temporales
+node_modules/
+*.log
