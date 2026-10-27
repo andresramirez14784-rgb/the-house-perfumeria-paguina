@@ -39,6 +39,8 @@ let clock;
 let bottle;
 let glow;
 let orb;
+let vortex = null;
+let vortexData = null;
 let rings = [];
 let dust = null;
 let dustSpeeds = null;
@@ -179,6 +181,7 @@ function init() {
   scene.add(bottle);
   buildRings();
   buildDust();
+  buildVortex();
   buildBurst();
   buildComposer();
 
@@ -353,9 +356,9 @@ function buildBottle() {
 /* Anillos holográficos parciales alrededor de la base */
 function buildRings() {
   const defs = [
-    { r: 1.35, arc: Math.PI * 1.55, tube: 0.005, color: 0xe6c270, opacity: 0.5, speed: 0.22 },
-    { r: 1.8, arc: Math.PI * 1.2, tube: 0.0035, color: 0x76d7ff, opacity: 0.3, speed: -0.16 },
-    { r: 2.25, arc: Math.PI * 1.72, tube: 0.003, color: 0xe6c270, opacity: 0.22, speed: 0.11 },
+    { r: 1.35, arc: Math.PI * 1.55, tube: 0.005, color: 0xe6c270, opacity: 0.5, speed: 0.55 },
+    { r: 1.8, arc: Math.PI * 1.2, tube: 0.0035, color: 0x76d7ff, opacity: 0.3, speed: -0.4 },
+    { r: 2.25, arc: Math.PI * 1.72, tube: 0.003, color: 0xe6c270, opacity: 0.22, speed: 0.28 },
   ];
 
   defs.forEach((d, i) => {
@@ -429,6 +432,40 @@ function buildBurst() {
     })
   );
   scene.add(burst);
+}
+
+/* Espiral de partículas doradas orbitando la botella */
+function buildVortex() {
+  const count = 220;
+  const pos = new Float32Array(count * 3);
+  vortexData = [];
+
+  for (let i = 0; i < count; i++) {
+    vortexData.push({
+      a: Math.random() * Math.PI * 2,
+      r: 1.1 + Math.random() * 2.0,
+      y: -0.9 + Math.random() * 2.6,
+      speed: 0.4 + Math.random() * 0.9,
+      drift: 0.4 + Math.random() * 0.8,
+    });
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+
+  vortex = new THREE.Points(
+    geo,
+    new THREE.PointsMaterial({
+      color: 0xf3d98a,
+      size: 0.05,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+    })
+  );
+  scene.add(vortex);
 }
 
 function buildComposer() {
@@ -662,12 +699,18 @@ function animate() {
   const t = state.time;
 
   if (!state.dragging) {
-    state.spin += (reduceMotion ? 0 : 0.3) * dt + state.momentum * dt;
+    state.spin += (reduceMotion ? 0 : 0.45) * dt + state.momentum * dt;
     state.momentum *= Math.pow(0.0015, dt);
   }
 
   const px = reduceMotion ? 0 : state.pointerX;
   const py = reduceMotion ? 0 : state.pointerY;
+
+  // Entrada cinematográfica: la cámara entra desde lejos y arriba
+  const introT = Math.min(1, t / 3.2);
+  const introEase = 1 - Math.pow(1 - introT, 3);
+  const introZoom = reduceMotion ? 0 : (1 - introEase) * 9.0;
+  const introLift = reduceMotion ? 0 : (1 - introEase) * 2.4;
 
   bottle.rotation.y = state.spin + px * 0.22 + state.scroll * 1.6;
   bottle.rotation.x = THREE.MathUtils.lerp(
@@ -675,7 +718,7 @@ function animate() {
     -py * 0.08 + (reduceMotion ? 0 : Math.sin(t * 0.5) * 0.06),
     Math.min(1, dt * 3)
   );
-  bottle.position.y = bottleBaseY + (reduceMotion ? 0 : Math.sin(t * 0.75) * 0.055);
+  bottle.position.y = bottleBaseY + (reduceMotion ? 0 : Math.sin(t * 0.75) * 0.08);
 
   // Orbe de luz orbitando alrededor de la botella
   if (orb) {
@@ -695,8 +738,8 @@ function animate() {
   }
 
   camera.position.x = px * 0.45;
-  camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.28;
-  camera.position.z = (portrait ? 7.4 : 6.4) - state.scroll * 0.6 + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
+  camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.28 + introLift;
+  camera.position.z = (portrait ? 7.4 : 6.4) - state.scroll * 0.6 + introZoom + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
   camera.lookAt(portrait ? 0 : 0.4, portrait ? 1.35 : 0.02, 0);
 
   rings.forEach((ring, i) => {
@@ -714,9 +757,26 @@ function animate() {
     attr.needsUpdate = true;
   }
 
+  if (vortex && vortexData) {
+    const vattr = vortex.geometry.attributes.position;
+    for (let i = 0; i < vortexData.length; i++) {
+      const p = vortexData[i];
+      p.a += p.speed * dt;
+      const r = p.r + Math.sin(t * 0.5 + i) * 0.25;
+      const y = p.y + Math.sin(t * p.drift + i) * 0.35;
+      vattr.setXYZ(
+        i,
+        bottle.position.x + Math.cos(p.a) * r,
+        bottleBaseY + y * 0.7,
+        Math.sin(p.a) * r
+      );
+    }
+    vattr.needsUpdate = true;
+  }
+
   if (burstLife > 0) updateBurst(dt);
 
-  if (bloom) bloom.strength = 0.55 - state.scroll * 0.25;
+  if (bloom) bloom.strength = 0.7 - state.scroll * 0.3;
 
   composer.render();
 
