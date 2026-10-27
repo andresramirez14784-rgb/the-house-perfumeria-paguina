@@ -236,10 +236,17 @@ h1 em {
   font-style: italic;
   padding-right: 0.06em;
   background: linear-gradient(94deg, #f9e4a8 0%, #e6c270 44%, #b8862e 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .lede {
@@ -923,7 +930,7 @@ h2 em { font-style: italic; color: var(--gold-2); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
-  .hint__dot, .scroll-cue span, .loader__bar i { animation: none; }
+  .hint__dot, .scroll-cue span, .loader__bar i, h1 em { animation: none; }
   .btn, .card, .pill { transition: none; }
   .note__meter i { transform: scaleX(1); }
 }

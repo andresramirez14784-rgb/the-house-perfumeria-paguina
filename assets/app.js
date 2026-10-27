@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    THE HOUSE PERFUMERÍA — escena 3D
    three.js r169 · módulo ES
    Botella de cristal procedural, suelo reflectante, anillos
@@ -38,6 +38,7 @@ let bloom;
 let clock;
 let bottle;
 let glow;
+let orb;
 let rings = [];
 let dust = null;
 let dustSpeeds = null;
@@ -250,6 +251,19 @@ function buildGlow() {
   glow.scale.set(7.5, 7.5, 1);
   glow.position.set(1.15, 0.5, -2.4);
   scene.add(glow);
+
+  // Orbe de luz que orbita alrededor de la botella
+  orb = new THREE.Sprite(
+    new THREE.SpriteMaterial({
+      map: radialTexture("rgba(255, 226, 166, 0.9)", "rgba(255, 226, 166, 0)"),
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      opacity: 0.9,
+    })
+  );
+  orb.scale.set(0.5, 0.5, 1);
+  scene.add(orb);
 }
 
 /* Botella: cristal con transmisión, líquido ámbar, tapón de oro */
@@ -383,9 +397,9 @@ function buildDust() {
     geo,
     new THREE.PointsMaterial({
       color: 0xe6c98d,
-      size: 0.016,
+      size: 0.022,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       sizeAttenuation: true,
@@ -648,7 +662,7 @@ function animate() {
   const t = state.time;
 
   if (!state.dragging) {
-    state.spin += (reduceMotion ? 0 : 0.16) * dt + state.momentum * dt;
+    state.spin += (reduceMotion ? 0 : 0.3) * dt + state.momentum * dt;
     state.momentum *= Math.pow(0.0015, dt);
   }
 
@@ -656,12 +670,33 @@ function animate() {
   const py = reduceMotion ? 0 : state.pointerY;
 
   bottle.rotation.y = state.spin + px * 0.22 + state.scroll * 1.6;
-  bottle.rotation.x = THREE.MathUtils.lerp(bottle.rotation.x, -py * 0.08, Math.min(1, dt * 3));
-  bottle.position.y = bottleBaseY + (reduceMotion ? 0 : Math.sin(t * 0.75) * 0.045);
+  bottle.rotation.x = THREE.MathUtils.lerp(
+    bottle.rotation.x,
+    -py * 0.08 + (reduceMotion ? 0 : Math.sin(t * 0.5) * 0.06),
+    Math.min(1, dt * 3)
+  );
+  bottle.position.y = bottleBaseY + (reduceMotion ? 0 : Math.sin(t * 0.75) * 0.055);
+
+  // Orbe de luz orbitando alrededor de la botella
+  if (orb) {
+    const oa = t * 0.85;
+    orb.position.set(
+      bottle.position.x + Math.cos(oa) * 1.9,
+      bottleBaseY + 0.3 + Math.sin(t * 1.4) * 0.25,
+      Math.sin(oa) * 1.9
+    );
+    orb.material.opacity = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(t * 2.2));
+  }
+
+  // Halo pulsante
+  if (glow) {
+    const s = 7.5 * (1 + (reduceMotion ? 0 : Math.sin(t * 0.9) * 0.06));
+    glow.scale.set(s, s, 1);
+  }
 
   camera.position.x = px * 0.45;
   camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.28;
-  camera.position.z = (portrait ? 7.4 : 6.4) - state.scroll * 0.6;
+  camera.position.z = (portrait ? 7.4 : 6.4) - state.scroll * 0.6 + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
   camera.lookAt(portrait ? 0 : 0.4, portrait ? 1.35 : 0.02, 0);
 
   rings.forEach((ring, i) => {
