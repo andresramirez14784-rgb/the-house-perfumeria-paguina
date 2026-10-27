@@ -57,6 +57,10 @@ let firstFrame = true;
 const LIQ_A = new THREE.Color(0xc0701c);
 const LIQ_B = new THREE.Color(0x8a351f);
 
+// Fondo que se calienta con el scroll (color grading cinematográfico)
+const BG_A = new THREE.Color(0x060608);
+const BG_B = new THREE.Color(0x150b06);
+
 /* ------------------------------------------------------------
    Utilidades
    ------------------------------------------------------------ */
@@ -193,6 +197,7 @@ function init() {
   layout();
   updateScroll();
   bindEvents();
+  initCineMode();
 
   clock.start();
   rafId = requestAnimationFrame(animate);
@@ -642,6 +647,75 @@ function initTilt() {
   });
 }
 
+/* Modo cine: reproduce la página sola, como un video */
+function initCineMode() {
+  const btn = document.getElementById("cineBtn");
+  if (!btn) return;
+
+  let playing = false;
+  let raf = 0;
+  let startY = 0;
+  let startT = 0;
+  const SPEED = 150; // píxeles por segundo
+
+  const label = (text, icon) => {
+    btn.innerHTML = '<span aria-hidden="true">' + icon + "</span> " + text;
+  };
+
+  const stop = () => {
+    playing = false;
+    btn.classList.remove("is-playing");
+    btn.setAttribute("aria-pressed", "false");
+    label("Modo cine", "▶");
+    document.documentElement.classList.remove("is-cine");
+    cancelAnimationFrame(raf);
+  };
+
+  const step = (now) => {
+    if (!playing) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const target = startY + (SPEED * (now - startT)) / 1000;
+
+    if (target >= max) {
+      window.scrollTo(0, max);
+      stop();
+      return;
+    }
+
+    window.scrollTo(0, target);
+    raf = requestAnimationFrame(step);
+  };
+
+  btn.addEventListener("click", () => {
+    if (playing) {
+      stop();
+      return;
+    }
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (window.scrollY >= max - 8) {
+      window.scrollTo(0, 0);
+    }
+    playing = true;
+    startY = window.scrollY;
+    startT = performance.now();
+    btn.classList.add("is-playing");
+    btn.setAttribute("aria-pressed", "true");
+    label("Pausar", "❚❚");
+    document.documentElement.classList.add("is-cine");
+    raf = requestAnimationFrame(step);
+  });
+
+  ["wheel", "touchstart", "keydown"].forEach((ev) => {
+    window.addEventListener(
+      ev,
+      () => {
+        if (playing) stop();
+      },
+      { passive: true }
+    );
+  });
+}
+
 function hideLoader() {
   if (!loader) return;
   loader.classList.add("is-done");
@@ -711,6 +785,9 @@ function animate() {
   const px = reduceMotion ? 0 : state.pointerX;
   const py = reduceMotion ? 0 : state.pointerY;
 
+  // Progreso global del scroll (0 → 1) que mueve la "película"
+  const p = state.scroll;
+
   // Entrada cinematográfica: la cámara entra desde lejos y arriba
   const introT = Math.min(1, t / 3.2);
   const introEase = 1 - Math.pow(1 - introT, 3);
@@ -747,10 +824,16 @@ function animate() {
     glow.scale.set(s, s, 1);
   }
 
-  camera.position.x = px * 0.45;
-  camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.28 + introLift;
-  camera.position.z = (portrait ? 7.4 : 6.4) - state.scroll * 0.6 + introZoom + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
-  camera.lookAt(portrait ? 0 : 0.4, portrait ? 1.35 : 0.02, 0);
+  camera.position.x = px * 0.4 + (reduceMotion ? 0 : Math.sin(p * Math.PI * 1.2) * 1.15);
+  camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.25 + introLift + p * 2.1;
+  camera.position.z = (portrait ? 7.4 : 6.4) - p * 1.5 + introZoom + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
+  camera.lookAt(bottle.position.x * 0.85, bottleBaseY + 0.15, 0);
+
+  // Color grading: la escena se calienta conforme avanza la historia
+  if (scene.background) {
+    scene.background.copy(BG_A).lerp(BG_B, p * 0.7);
+    scene.fog.color.copy(scene.background);
+  }
 
   rings.forEach((ring, i) => {
     ring.mesh.rotation.z += ring.speed * dt;
