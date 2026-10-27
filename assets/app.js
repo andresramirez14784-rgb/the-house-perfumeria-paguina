@@ -39,6 +39,7 @@ let clock;
 let bottle;
 let glow;
 let orb;
+let liquidMat = null;
 let vortex = null;
 let vortexData = null;
 let rings = [];
@@ -51,6 +52,10 @@ let portrait = false;
 let bottleBaseY = 0.08;
 let rafId = 0;
 let firstFrame = true;
+
+// Colores del líquido que cambian con el scroll (ámbar → caoba)
+const LIQ_A = new THREE.Color(0xc0701c);
+const LIQ_B = new THREE.Color(0x8a351f);
 
 /* ------------------------------------------------------------
    Utilidades
@@ -294,7 +299,7 @@ function buildBottle() {
 
   // El líquido NO usa transmisión: three.js no dibuja objetos transmisivos
   // dentro de otro objeto transmisivo (la botella no los vería).
-  const liquidMat = new THREE.MeshPhysicalMaterial({
+  liquidMat = new THREE.MeshPhysicalMaterial({
     color: 0xc0701c,
     roughness: 0.18,
     metalness: 0,
@@ -712,13 +717,18 @@ function animate() {
   const introZoom = reduceMotion ? 0 : (1 - introEase) * 9.0;
   const introLift = reduceMotion ? 0 : (1 - introEase) * 2.4;
 
-  bottle.rotation.y = state.spin + px * 0.22 + state.scroll * 1.6;
+  bottle.rotation.y = state.spin + px * 0.22 + state.scroll * 3.2;
   bottle.rotation.x = THREE.MathUtils.lerp(
     bottle.rotation.x,
-    -py * 0.08 + (reduceMotion ? 0 : Math.sin(t * 0.5) * 0.06),
+    -py * 0.08 + (reduceMotion ? 0 : Math.sin(t * 0.5) * 0.06) + state.scroll * 0.5,
     Math.min(1, dt * 3)
   );
   bottle.position.y = bottleBaseY + (reduceMotion ? 0 : Math.sin(t * 0.75) * 0.08);
+
+  // El líquido cambia de color conforme bajas por la página
+  if (liquidMat) {
+    liquidMat.color.copy(LIQ_A).lerp(LIQ_B, state.scroll);
+  }
 
   // Orbe de luz orbitando alrededor de la botella
   if (orb) {
