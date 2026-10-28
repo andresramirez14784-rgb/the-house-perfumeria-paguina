@@ -102,6 +102,7 @@ function start() {
 
   let sprayLife = 0;
   const sprayVel = new Float32Array(150 * 3);
+  const tmpQuat = new THREE.Quaternion();
 
   const spray = buildSpray(scene);
 
@@ -179,17 +180,23 @@ function start() {
 
   function fire() {
     if (!nozzle) return;
-    const origin = new THREE.Vector3();
-    nozzle.getWorldPosition(origin);
+
+    // El perfume sale por la boquilla lateral del pulsador
+    const origin = nozzle.localToWorld(new THREE.Vector3(0, 0, 0.13));
+    group.getWorldQuaternion(tmpQuat);
+    const fwd = new THREE.Vector3(0, 0, 1).applyQuaternion(tmpQuat);
+    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(tmpQuat);
 
     const pos = spray.geometry.attributes.position;
     for (let i = 0; i < 150; i++) {
-      pos.setXYZ(i, origin.x, origin.y + 0.02, origin.z);
-      const a = Math.random() * Math.PI * 2;
-      const spread = (0.3 + Math.random() * 0.7) * 0.6;
-      sprayVel[i * 3] = Math.cos(a) * spread;
-      sprayVel[i * 3 + 1] = 0.7 + Math.random() * 1.1;
-      sprayVel[i * 3 + 2] = Math.sin(a) * spread;
+      pos.setXYZ(i, origin.x, origin.y, origin.z);
+      const speed = 1.0 + Math.random() * 1.2;
+      const lateral = (Math.random() - 0.5) * 0.85;
+      const lift = (Math.random() - 0.15) * 0.5;
+
+      sprayVel[i * 3] = fwd.x * speed + right.x * lateral;
+      sprayVel[i * 3 + 1] = fwd.y * speed + lift;
+      sprayVel[i * 3 + 2] = fwd.z * speed + right.z * lateral;
     }
     pos.needsUpdate = true;
     sprayLife = 1;
@@ -329,14 +336,38 @@ function buildBottle() {
   neck.position.y = H / 2 + 0.11;
   group.add(neck);
 
-  // Difusor (la puntica)
-  const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.052, 0.1, 24), chrome);
-  nozzle.position.y = H / 2 + 0.24;
+  // Collarín metálico (crimp) sobre el cuello
+  const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.155, 0.165, 0.06, 40), chrome);
+  collar.position.y = H / 2 + 0.24;
+  group.add(collar);
+
+  // Vástago de la bomba
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.07, 16), chrome);
+  stem.position.y = H / 2 + 0.3;
+  group.add(stem);
+
+  // Pulsador (botón del spray): pastilla ovalada con boquilla lateral
+  const nozzle = new THREE.Group();
+  nozzle.position.y = H / 2 + 0.36;
+
+  const button = new THREE.Mesh(new RoundedBoxGeometry(0.16, 0.07, 0.14, 4, 0.028), chrome);
+  nozzle.add(button);
+
+  const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.021, 0.021, 0.07, 14), chrome);
+  spout.rotation.x = Math.PI / 2;
+  spout.position.set(0, 0, 0.085);
+  nozzle.add(spout);
+
+  // Orificio: pequeño punto oscuro al final de la boquilla
+  const orifice = new THREE.Mesh(new THREE.CircleGeometry(0.009, 12), dark);
+  orifice.position.set(0, 0, 0.121);
+  nozzle.add(orifice);
+
   group.add(nozzle);
 
-  // Zona de toque invisible, más grande que la puntica
+  // Zona de toque invisible, más grande que el pulsador
   const hit = new THREE.Mesh(
-    new THREE.SphereGeometry(0.24, 16, 16),
+    new THREE.SphereGeometry(0.17, 16, 16),
     new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false })
   );
   hit.position.copy(nozzle.position);
