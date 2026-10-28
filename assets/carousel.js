@@ -44,9 +44,9 @@
       var t = Math.max(-1, Math.min(1, d));
 
       slide.style.transform =
-        "perspective(1400px) rotateY(" + (t * -16).toFixed(2) + "deg)" +
-        " scale(" + (1 - Math.abs(t) * 0.14).toFixed(3) + ")";
-      slide.style.opacity = String(Math.max(0.25, 1 - Math.abs(t) * 0.6));
+        "perspective(1400px) rotateY(" + (t * -12).toFixed(2) + "deg)" +
+        " scale(" + (1 - Math.abs(t) * 0.1).toFixed(3) + ")";
+      slide.style.opacity = String(Math.max(0.5, 1 - Math.abs(t) * 0.45));
 
       if (Math.abs(d) < bestDist) {
         bestDist = Math.abs(d);

@@ -833,6 +833,7 @@ h2 em { font-style: italic; color: var(--gold-2); }
 
 .catalog {
   position: relative;
+  --slide-w: min(484px, 86%);
   max-width: 780px;
   margin-inline: auto;
 }
@@ -844,7 +845,7 @@ h2 em { font-style: italic; color: var(--gold-2); }
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 6px 0 26px;
+  padding: 6px calc((100% - var(--slide-w)) / 2) 26px;
   perspective: 1400px;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -855,13 +856,17 @@ h2 em { font-style: italic; color: var(--gold-2); }
 .catalog__track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
 
 .slide {
-  flex: 0 0 min(520px, 86%);
+  flex: 0 0 var(--slide-w);
   scroll-snap-align: center;
   transform-style: preserve-3d;
   will-change: transform, opacity;
 }
 
 .slide .product { height: 100%; }
+
+@media (min-width: 760px) {
+  .slide .product__media { aspect-ratio: 4 / 3; }
+}
 
 .catalog__ui {
   display: flex;
