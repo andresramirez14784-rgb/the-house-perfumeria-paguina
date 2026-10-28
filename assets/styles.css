@@ -401,17 +401,11 @@ h1 em {
   position: relative;
   z-index: 4;
   padding: clamp(72px, 12vh, 150px) 0;
-  background: rgba(6, 4, 10, 0.68);
-  backdrop-filter: blur(14px) saturate(115%);
-  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  background: rgba(6, 4, 10, 0.9);
   scroll-margin-top: 96px;
 }
 
-.section--solid {
-  background: rgba(6, 4, 10, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
+.section--solid { background: rgba(6, 4, 10, 0.95); }
 
 .section::before {
   content: "";
@@ -834,6 +828,96 @@ h2 em { font-style: italic; color: var(--gold-2); }
 }
 
 .reveal.is-in .note__meter i { transform: scaleX(1); }
+
+/* ---------- Carrusel del catálogo ---------- */
+
+.catalog {
+  position: relative;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.catalog__track {
+  position: relative;
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 6px 0 26px;
+  perspective: 1400px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+
+.catalog__track::-webkit-scrollbar { display: none; }
+.catalog__track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+
+.slide {
+  flex: 0 0 min(520px, 86%);
+  scroll-snap-align: center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.slide .product { height: 100%; }
+
+.catalog__ui {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.catalog__arrow {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(230, 194, 112, 0.35);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold-2);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.catalog__arrow:hover {
+  border-color: var(--gold);
+  background: rgba(230, 194, 112, 0.1);
+  transform: translateY(-2px);
+}
+
+.catalog__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.catalog__dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(247, 240, 226, 0.25);
+  cursor: pointer;
+  transition: background 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
+}
+
+.catalog__dot.is-active {
+  width: 22px;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+@media (max-width: 640px) {
+  .catalog__arrow { display: none; }
+}
 
 /* ---------- Visor 360 ---------- */
 

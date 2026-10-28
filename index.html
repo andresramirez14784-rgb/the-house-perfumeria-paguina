@@ -76,61 +76,65 @@
           </p>
         </header>
 
-        <figure class="banner reveal">
-          <img src="assets/productos/banner-por-gramos.webp" alt="" loading="lazy" />
-          <figcaption>
-            <p class="eyebrow">Decants por mililitros</p>
-            <p class="banner__title">Tu perfume favorito, <em>a tu medida</em></p>
-          </figcaption>
-        </figure>
-
-        <div class="grid grid--catalog">
-          <article class="product reveal" data-unit="4500" data-name="212 VIP Men de Carolina Herrera">
-            <a class="product__media"
-               href="https://wa.me/573001234567?text=Hola%2C%20quiero%2010%20ml%20de%20212%20VIP%20Men"
-               target="_blank" rel="noopener"
-               aria-label="Pedir 212 VIP Men por WhatsApp">
-              <img src="assets/productos/212-vip-men.webp"
-                   alt="212 VIP Men de Carolina Herrera: frasco plateado y caja blanca sobre una mesa"
-                   width="500" height="500" loading="lazy" />
-              <span class="product__badge">Original</span>
-            </a>
-            <div class="product__body">
-              <p class="product__brand">Carolina Herrera</p>
-              <h3 class="product__name">212 VIP Men</h3>
-              <p class="product__desc">
-                Vodka, lima y cuero sobre ámbar. Amaderado aromático para la
-                noche urbana.
-              </p>
-              <p class="product__unit">$ 4.500 <small>/ ml</small></p>
-              <div class="product__grams" role="group" aria-label="Cantidad en mililitros">
-                <button type="button" data-g="5">5 ml</button>
-                <button type="button" data-g="10" class="is-active">10 ml</button>
-                <button type="button" data-g="15">15 ml</button>
-                <button type="button" data-g="30">30 ml</button>
-              </div>
-              <div class="product__foot">
-                <span class="product__price" data-total>$ 45.000</span>
-                <a class="product__cta" data-wa
+        <div class="catalog reveal" id="catalog">
+          <div class="catalog__track" id="catalogTrack" tabindex="0" aria-label="Catálogo de fragancias">
+            <div class="slide">
+              <article class="product" data-unit="4500" data-name="212 VIP Men de Carolina Herrera">
+                <a class="product__media"
                    href="https://wa.me/573001234567?text=Hola%2C%20quiero%2010%20ml%20de%20212%20VIP%20Men"
-                   target="_blank" rel="noopener">Pedir <span aria-hidden="true">→</span></a>
-              </div>
+                   target="_blank" rel="noopener"
+                   aria-label="Pedir 212 VIP Men por WhatsApp">
+                  <img src="assets/productos/212-vip-men.webp"
+                       alt="212 VIP Men de Carolina Herrera: frasco plateado y caja blanca sobre una mesa"
+                       width="500" height="500" loading="lazy" />
+                  <span class="product__badge">Original</span>
+                </a>
+                <div class="product__body">
+                  <p class="product__brand">Carolina Herrera</p>
+                  <h3 class="product__name">212 VIP Men</h3>
+                  <p class="product__desc">
+                    Vodka, lima y cuero sobre ámbar. Amaderado aromático para la
+                    noche urbana.
+                  </p>
+                  <p class="product__unit">$ 4.500 <small>/ ml</small></p>
+                  <div class="product__grams" role="group" aria-label="Cantidad en mililitros">
+                    <button type="button" data-g="5">5 ml</button>
+                    <button type="button" data-g="10" class="is-active">10 ml</button>
+                    <button type="button" data-g="15">15 ml</button>
+                    <button type="button" data-g="30">30 ml</button>
+                  </div>
+                  <div class="product__foot">
+                    <span class="product__price" data-total>$ 45.000</span>
+                    <a class="product__cta" data-wa
+                       href="https://wa.me/573001234567?text=Hola%2C%20quiero%2010%20ml%20de%20212%20VIP%20Men"
+                       target="_blank" rel="noopener">Pedir <span aria-hidden="true">→</span></a>
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
 
-          <article class="product product--cta reveal">
-            <div class="product__body">
-              <p class="product__brand">¿No la encuentras?</p>
-              <h3 class="product__name">Te conseguimos<br />tu fragancia</h3>
-              <p class="product__desc">
-                Dinos qué perfume quieres y cuántos mililitros necesitas; te
-                confirmamos precio y disponibilidad el mismo día.
-              </p>
-              <a class="btn btn--solid"
-                 href="https://wa.me/573001234567?text=Hola%2C%20busco%20una%20fragancia%20por%20mililitros"
-                 target="_blank" rel="noopener">Escribir por WhatsApp</a>
+            <div class="slide">
+              <article class="product product--cta">
+                <div class="product__body">
+                  <p class="product__brand">¿No la encuentras?</p>
+                  <h3 class="product__name">Te conseguimos<br />tu fragancia</h3>
+                  <p class="product__desc">
+                    Dinos qué perfume quieres y cuántos mililitros necesitas; te
+                    confirmamos precio y disponibilidad el mismo día.
+                  </p>
+                  <a class="btn btn--solid"
+                     href="https://wa.me/573001234567?text=Hola%2C%20busco%20una%20fragancia%20por%20mililitros"
+                     target="_blank" rel="noopener">Escribir por WhatsApp</a>
+                </div>
+              </article>
             </div>
-          </article>
+          </div>
+
+          <div class="catalog__ui">
+            <button class="catalog__arrow" id="catPrev" type="button" aria-label="Fragancia anterior">‹</button>
+            <div class="catalog__dots" id="catDots"></div>
+            <button class="catalog__arrow" id="catNext" type="button" aria-label="Siguiente fragancia">›</button>
+          </div>
         </div>
       </div>
     </section>
@@ -325,5 +329,6 @@
   <script type="module" src="assets/app.js"></script>
   <script type="module" src="assets/viewer.js"></script>
   <script src="assets/catalog.js" defer></script>
+  <script src="assets/carousel.js" defer></script>
 </body>
 </html>
