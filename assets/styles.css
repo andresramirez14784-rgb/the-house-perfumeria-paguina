@@ -864,6 +864,16 @@ h2 em { font-style: italic; color: var(--gold-2); }
 
 .slide .product { height: 100%; }
 
+/* El producto enfocado se eleva y resalta (efecto "menú vivo") */
+.slide.is-active .product {
+  border-color: rgba(230, 194, 112, 0.45);
+  box-shadow: 0 46px 90px -44px rgba(230, 194, 112, 0.6);
+}
+
+.slide.is-active .product__media img { transform: scale(1.06); }
+
+.slide.is-active .product__media::after { opacity: 1; }
+
 @media (min-width: 760px) {
   .slide .product__media { aspect-ratio: 4 / 3; }
 }

@@ -38,20 +38,29 @@
     var half = track.clientWidth / 2;
     var best = 0;
     var bestDist = Infinity;
+    var entries = [];
 
     slides.forEach(function (slide, i) {
       var d = (centerOf(slide) - center) / half;
       var t = Math.max(-1, Math.min(1, d));
-
-      slide.style.transform =
-        "perspective(1400px) rotateY(" + (t * -12).toFixed(2) + "deg)" +
-        " scale(" + (1 - Math.abs(t) * 0.1).toFixed(3) + ")";
-      slide.style.opacity = String(Math.max(0.5, 1 - Math.abs(t) * 0.45));
-
       if (Math.abs(d) < bestDist) {
         bestDist = Math.abs(d);
         best = i;
       }
+      entries.push({ slide: slide, t: t });
+    });
+
+    entries.forEach(function (e, i) {
+      var at = Math.abs(e.t);
+      var depth = (1 - at) * 85 - 30;
+
+      e.slide.style.transform =
+        "translateZ(" + depth.toFixed(1) + "px)" +
+        " rotateY(" + (e.t * -10).toFixed(2) + "deg)" +
+        " scale(" + (1 - at * 0.07).toFixed(3) + ")";
+      e.slide.style.opacity = String(Math.max(0.45, 1 - at * 0.5));
+      e.slide.style.zIndex = String(100 - Math.round(at * 50));
+      e.slide.classList.toggle("is-active", i === best);
     });
 
     if (best !== active) {
