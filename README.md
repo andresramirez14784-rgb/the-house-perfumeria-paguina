@@ -34,6 +34,8 @@ de VS Code, etc.
 index.html          Marcado y contenido (textos, precios, enlaces)
 assets/styles.css   Paleta, tipografía, tarjetas, animaciones de scroll
 assets/app.js       Escena three.js + interacciones
+assets/viewer.js    Visor 3D del producto (360°, tapa y difusor)
+assets/catalog.js   Selector de ml y enlace de WhatsApp
 assets/logo-the-house.png   Logotipo de la marca (fondo transparente)
 assets/productos/   Fotos del catálogo (WebP optimizado)
 serve.py            Servidor local con apertura automática del navegador

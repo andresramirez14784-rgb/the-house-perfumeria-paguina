@@ -51,8 +51,13 @@ assets/productos/       Fotos de producto en WebP
 assets/logo-the-house.png
 ```
 
-Secciones en orden: portada (`#top`) → catálogo (`#catalogo`) → cómo funciona
-(`#proceso`) → garantía (`#garantia`) → preguntas (`#faq`) → contacto (`#contacto`).
+Secciones en orden: portada (`#top`) → catálogo (`#catalogo`) → visor 360
+(`#visor`) → cómo funciona (`#proceso`) → garantía (`#garantia`) → preguntas
+(`#faq`) → contacto (`#contacto`).
+
+El visor (`assets/viewer.js`) es un visor de producto aparte: gira solo, se
+arrastra, la tapa se abre al tocarla y el difusor rocía loción. Se inicializa
+solo cuando entra en pantalla y pausa la escena principal mientras está visible.
 
 ## Movimiento (la seña de identidad)
 

@@ -909,6 +909,9 @@ function animate() {
 
   if (bloom) bloom.strength = 0.7 - state.scroll * 0.3;
 
+  // Si el visor 360 está en pantalla, pausamos esta escena para ahorrar GPU
+  if (document.body.dataset.viewer === "1") return;
+
   composer.render();
 
   if (firstFrame) {

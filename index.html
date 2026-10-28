@@ -135,6 +135,26 @@
       </div>
     </section>
 
+    <!-- Visor 360 del producto destacado -->
+    <section class="section section--solid" id="visor">
+      <div class="wrap">
+        <header class="section__head reveal">
+          <p class="eyebrow">Vista 360°</p>
+          <h2>212 VIP Men <em>de cerca</em></h2>
+          <p class="section__lede">
+            Gíralo con el dedo, quita la tapa y pulsa el difusor para ver
+            cómo sale la loción.
+          </p>
+        </header>
+
+        <div class="viewer reveal" id="viewer">
+          <canvas id="bottle3d" aria-label="Modelo 3D del frasco 212 VIP Men"></canvas>
+          <button class="viewer__btn" id="capBtn" type="button">Destapar</button>
+          <p class="viewer__hint" id="viewerHint">Arrastra para girar · toca la tapa</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Cómo funciona -->
     <section class="section" id="proceso">
       <div class="wrap">
@@ -303,6 +323,7 @@
     }
   </script>
   <script type="module" src="assets/app.js"></script>
+  <script type="module" src="assets/viewer.js"></script>
   <script src="assets/catalog.js" defer></script>
 </body>
 </html>
