@@ -42,7 +42,7 @@ function start() {
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.02;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
@@ -292,6 +292,35 @@ function start() {
 
 /* ---------- Construcción del frasco ---------- */
 
+/* ---------- Texturas ---------- */
+
+/* Rugosidad de metal cepillado (líneas finas verticales) */
+function brushedTexture() {
+  const c = document.createElement("canvas");
+  c.width = 256;
+  c.height = 256;
+  const g = c.getContext("2d");
+
+  g.fillStyle = "#8c8c8c";
+  g.fillRect(0, 0, 256, 256);
+
+  for (let i = 0; i < 900; i++) {
+    const y = Math.random() * 256;
+    const v = 90 + Math.floor(Math.random() * 90);
+    g.strokeStyle = "rgba(" + v + "," + v + "," + v + "," + (0.05 + Math.random() * 0.18).toFixed(2) + ")";
+    g.lineWidth = 0.6 + Math.random();
+    g.beginPath();
+    g.moveTo(0, y);
+    g.lineTo(256, y);
+    g.stroke();
+  }
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(2, 6);
+  return tex;
+}
+
 function buildBottle() {
   const W = 1.12;
   const H = 1.72;
@@ -299,24 +328,33 @@ function buildBottle() {
 
   const group = new THREE.Group();
 
-  const metal = new THREE.MeshStandardMaterial({
-    color: 0xb9c1c8,
+  // Metal cepillado: el mapa de rugosidad rompe el reflejo perfecto
+  const metal = new THREE.MeshPhysicalMaterial({
+    color: 0x9aa3ac,
     metalness: 1,
-    roughness: 0.28,
-    envMapIntensity: 1.15,
+    roughness: 0.5,
+    roughnessMap: brushedTexture(),
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.28,
+    envMapIntensity: 1.05,
   });
 
-  const dark = new THREE.MeshStandardMaterial({
+  const dark = new THREE.MeshPhysicalMaterial({
     color: 0x14161b,
-    metalness: 0.95,
-    roughness: 0.32,
+    metalness: 0.9,
+    roughness: 0.38,
+    clearcoat: 0.4,
+    clearcoatRoughness: 0.3,
+    envMapIntensity: 1.2,
   });
 
-  const chrome = new THREE.MeshStandardMaterial({
-    color: 0xd9dde1,
+  const chrome = new THREE.MeshPhysicalMaterial({
+    color: 0xdfe3e7,
     metalness: 1,
-    roughness: 0.16,
-    envMapIntensity: 1.3,
+    roughness: 0.12,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.15,
+    envMapIntensity: 1.7,
   });
 
   // Cuerpo
@@ -383,14 +421,16 @@ function buildBottle() {
   cap.position.set(0, 1.32, 0);
   group.add(cap);
 
-  // Etiqueta vertical
+  // Texto impreso sobre el metal (sin etiqueta: fondo transparente)
   const label = new THREE.Mesh(
     new THREE.PlaneGeometry(0.58, 1.02),
     new THREE.MeshStandardMaterial({
       map: labelTexture(),
-      metalness: 0.35,
-      roughness: 0.45,
-      envMapIntensity: 0.8,
+      transparent: true,
+      depthWrite: false,
+      metalness: 0.2,
+      roughness: 0.5,
+      envMapIntensity: 0.7,
     })
   );
   label.position.set(0, 0.02, D / 2 + 0.004);
@@ -401,22 +441,15 @@ function buildBottle() {
 }
 
 function labelTexture() {
-  const W = 512;
-  const H = 900;
+  const W = 1024;
+  const H = 1800;
   const c = document.createElement("canvas");
   c.width = W;
   c.height = H;
   const g = c.getContext("2d");
 
-  g.fillStyle = "#c6cbd1";
-  g.fillRect(0, 0, W, H);
-
-  const metal = g.createLinearGradient(0, 0, W, 0);
-  metal.addColorStop(0, "rgba(255,255,255,0.55)");
-  metal.addColorStop(0.45, "rgba(255,255,255,0)");
-  metal.addColorStop(1, "rgba(0,0,0,0.22)");
-  g.fillStyle = metal;
-  g.fillRect(0, 0, W, H);
+  // Fondo transparente: el texto va impreso sobre el metal, sin etiqueta
+  g.clearRect(0, 0, W, H);
 
   g.save();
   g.translate(W / 2, H / 2);
@@ -424,24 +457,27 @@ function labelTexture() {
   g.textAlign = "center";
   g.textBaseline = "middle";
 
-  g.fillStyle = "#22304f";
-  g.font = "700 98px Helvetica, Arial, sans-serif";
-  g.fillText("212  VIP", -120, 0);
+  g.fillStyle = "#1f2c4a";
+  g.font = "700 200px Helvetica, Arial, sans-serif";
+  g.fillText("212  VIP", -240, 0);
 
-  g.fillStyle = "#3c4454";
-  g.font = "600 48px Helvetica, Arial, sans-serif";
-  g.fillText("MEN", 220, 0);
-
+  g.fillStyle = "#39414f";
+  g.font = "600 96px Helvetica, Arial, sans-serif";
+  g.fillText("MEN", 440, 0);
   g.restore();
 
-  g.fillStyle = "rgba(40,50,70,0.5)";
-  g.font = "400 20px Helvetica, Arial, sans-serif";
   g.textAlign = "center";
-  g.fillText("EAU DE TOILETTE", W / 2, H - 46);
+  g.fillStyle = "rgba(35,45,65,0.75)";
+  g.font = "500 34px Helvetica, Arial, sans-serif";
+  g.fillText("CAROLINA HERRERA", W / 2, H - 120);
+
+  g.fillStyle = "rgba(35,45,65,0.55)";
+  g.font = "400 26px Helvetica, Arial, sans-serif";
+  g.fillText("EAU DE TOILETTE · 100 ML", W / 2, H - 62);
 
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 4;
+  tex.anisotropy = 8;
   return tex;
 }
 
