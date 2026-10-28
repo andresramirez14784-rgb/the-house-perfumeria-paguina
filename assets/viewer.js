@@ -321,6 +321,59 @@ function brushedTexture() {
   return tex;
 }
 
+/* Diseño impreso de la caja (frente y reverso) */
+function boxTexture() {
+  const W = 560;
+  const H = 820;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const g = c.getContext("2d");
+
+  g.fillStyle = "#e9e5db";
+  g.fillRect(0, 0, W, H);
+
+  g.textAlign = "center";
+  g.textBaseline = "middle";
+
+  g.fillStyle = "#a9a7a1";
+  g.font = "700 150px Helvetica, Arial, sans-serif";
+  g.fillText("212", W / 2, 110);
+
+  g.fillText("VIP", W / 2, 240);
+
+  g.fillStyle = "#8e8c86";
+  g.font = "700 128px Helvetica, Arial, sans-serif";
+  g.fillText("MEN", W / 2, 360);
+
+  g.strokeStyle = "#1a1a1a";
+  g.lineWidth = 4;
+  g.beginPath();
+  g.moveTo(56, 424);
+  g.lineTo(W - 56, 424);
+  g.stroke();
+
+  g.fillStyle = "#111";
+  g.font = "700 70px Helvetica, Arial, sans-serif";
+  g.fillText("ARE YOU", W / 2, 480);
+  g.fillText("ON THE", W / 2, 550);
+  g.fillText("LIST?", W / 2, 620);
+
+  g.lineWidth = 5;
+  g.strokeRect(118, 658, W - 236, 78);
+  g.font = "700 62px Helvetica, Arial, sans-serif";
+  g.fillText("NYC", W / 2, 698);
+
+  g.fillStyle = "#3a3a3a";
+  g.font = "500 26px Helvetica, Arial, sans-serif";
+  g.fillText("CAROLINA HERRERA", W / 2, 782);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  return tex;
+}
+
 function buildBottle() {
   const W = 1.12;
   const H = 1.72;
@@ -368,6 +421,17 @@ function buildBottle() {
   );
   band.position.y = H / 2 - H * 0.1;
   group.add(band);
+
+  // Caja impresa junto al frasco
+  const paper = new THREE.MeshStandardMaterial({ color: 0xe9e5db, roughness: 0.85, metalness: 0 });
+  const face = new THREE.MeshStandardMaterial({ map: boxTexture(), roughness: 0.8, metalness: 0 });
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(0.82, 1.2, 0.15),
+    [paper, paper, paper, paper, face, face]
+  );
+  box.position.set(-1.02, -0.02, -0.04);
+  box.rotation.y = -0.12;
+  group.add(box);
 
   // Cuello
   const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.22, 32), dark);
