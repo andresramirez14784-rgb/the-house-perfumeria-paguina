@@ -51,6 +51,17 @@ a { color: inherit; }
   touch-action: pan-y;
 }
 
+/* Calidez cinematográfica sobre la escena */
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 42% at 64% 44%, rgba(163, 96, 40, 0.3), transparent 72%),
+    radial-gradient(38% 34% at 24% 70%, rgba(90, 60, 30, 0.18), transparent 70%);
+}
+
 .no-webgl #scene { display: none; }
 
 .no-webgl .stage {
@@ -236,8 +247,8 @@ h1 {
   margin: 0 0 26px;
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(3.2rem, 8.2vw, 7.2rem);
-  line-height: 0.9;
+  font-size: clamp(2.6rem, 5.6vw, 4.9rem);
+  line-height: 0.95;
   letter-spacing: -0.005em;
   text-wrap: balance;
 }

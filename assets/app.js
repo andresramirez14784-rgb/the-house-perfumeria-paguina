@@ -39,6 +39,7 @@ let clock;
 let bottle;
 let glow;
 let orb;
+let wordmark = null;
 let liquidMat = null;
 let vortex = null;
 let vortexData = null;
@@ -188,6 +189,8 @@ function init() {
   buildGlow();
   bottle = buildBottle();
   scene.add(bottle);
+  wordmark = buildWordmark();
+  scene.add(wordmark);
   buildRings();
   buildDust();
   buildVortex();
@@ -251,6 +254,40 @@ function buildFloor() {
 }
 
 /* Halo cálido detrás de la botella */
+/* Wordmark gigante detrás de la botella (lo refracta el cristal) */
+function buildWordmark() {
+  const c = document.createElement("canvas");
+  c.width = 2048;
+  c.height = 512;
+  const g = c.getContext("2d");
+
+  g.textAlign = "center";
+  g.textBaseline = "middle";
+  g.fillStyle = "rgba(247, 232, 205, 0.34)";
+  g.font = "300 168px Georgia, 'Times New Roman', serif";
+  g.fillText("THE HOUSE", 1024, 196);
+
+  g.fillStyle = "rgba(247, 232, 205, 0.22)";
+  g.font = "400 66px Georgia, 'Times New Roman', serif";
+  g.fillText("P E R F U M E R Í A", 1024, 372);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(9.8, 2.45),
+    new THREE.MeshBasicMaterial({
+      map: tex,
+      transparent: true,
+      depthWrite: false,
+      opacity: 0.9,
+    })
+  );
+  mesh.position.set(1.0, 0.34, -2.7);
+  return mesh;
+}
+
 function buildGlow() {
   glow = new THREE.Sprite(
     new THREE.SpriteMaterial({
@@ -501,16 +538,25 @@ function layout() {
   if (portrait) {
     bottle.position.x = 0;
     bottle.scale.setScalar(0.52);
-    bottleBaseY = 2.1;
+    bottleBaseY = 3.5;
     camera.fov = 48;
   } else {
-    bottle.position.x = 1.15;
-    bottle.scale.setScalar(1);
+    bottle.position.x = 1.5;
+    bottle.scale.setScalar(1.1);
     bottleBaseY = 0.08;
     camera.fov = 36;
   }
 
   if (glow) glow.position.x = bottle.position.x;
+
+  if (wordmark) {
+    wordmark.visible = !portrait;
+    wordmark.position.x = bottle.position.x * 0.92;
+    const s = portrait ? 0.55 : 0.62;
+    wordmark.scale.set(s, s, 1);
+    wordmark.position.y = portrait ? 2.6 : 0.42;
+    wordmark.material.opacity = 0.55;
+  }
 
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
@@ -862,10 +908,16 @@ function animate() {
     glow.scale.set(s, s, 1);
   }
 
+  // Wordmark: parallax suave y se desvanece al bajar
+  if (wordmark) {
+    wordmark.position.x = bottle.position.x * 0.92 + px * 0.12;
+    wordmark.material.opacity = 0.55 * (1 - state.scroll * 0.8);
+  }
+
   camera.position.x = px * 0.4 + (reduceMotion ? 0 : Math.sin(p * Math.PI * 1.2) * 1.15);
-  camera.position.y = (portrait ? 1.15 : 0.32) + py * 0.25 + introLift + p * 2.1;
-  camera.position.z = (portrait ? 7.4 : 6.4) - p * 1.5 + introZoom + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
-  camera.lookAt(bottle.position.x * 0.85, bottleBaseY + 0.15, 0);
+  camera.position.y = (portrait ? 1.9 : 0.32) + py * 0.25 + introLift + p * 2.1;
+  camera.position.z = (portrait ? 7.4 : 5.8) - p * 1.5 + introZoom + (reduceMotion ? 0 : Math.sin(t * 0.6) * 0.08);
+  camera.lookAt(portrait ? 0 : bottle.position.x * 0.55, (portrait ? 2.2 : bottleBaseY + 0.15), 0);
 
   // Color grading: la escena se calienta conforme avanza la historia
   if (scene.background) {
